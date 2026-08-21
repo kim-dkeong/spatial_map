@@ -1,5 +1,3 @@
-"""dF/F 신호를 공간(z) bin 으로 묶어 spatial map 을 만드는 함수들."""
-
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
 from scipy.sparse import csr_matrix
@@ -7,15 +5,7 @@ from scipy.sparse import csr_matrix
 
 def spatial_map(sig, F, valid, z_range=(-3.2, 8.8), bin_size=0.4, fs=15.0,
                 col="z_rel"):
-    """
-    반환
-      maps  : (n_cells, n_trials, n_bins) — bin 안에서 **mean** (sum 아님)
-      occ   : (n_trials, n_bins) 초 단위 체류시간
-      edges, centers, trial_ids
-
-    dF/F 는 연속 신호라 bin 통계가 mean 이고, 이때 occupancy 보정이 자동으로
-    들어갑니다. sum 을 쓰면 오래 머문 bin 이 커지는 occupancy map 이 됩니다.
-    """
+    
     n_bins = int(round((z_range[1] - z_range[0]) / bin_size))
     edges = np.linspace(z_range[0], z_range[1], n_bins + 1)
     centers = 0.5 * (edges[:-1] + edges[1:])
@@ -53,7 +43,7 @@ def spatial_map(sig, F, valid, z_range=(-3.2, 8.8), bin_size=0.4, fs=15.0,
 
 
 def zscore(sig, mask=None, robust=True):
-    """binning 전에 시간축에서. robust=median/MAD (transient 로 std 부풀림 방지)."""
+  
     ref = sig if mask is None else sig[:, mask]
     if robust:
         c = np.nanmedian(ref, 1, keepdims=True)
