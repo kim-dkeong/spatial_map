@@ -1,14 +1,8 @@
-"""VR 프레임 로그에서 trial 별 cue / choice 지점의 좌표를 뽑아내는 함수들."""
-
 import numpy as np
 import pandas as pd
 
 
 def find_cue_position(frames, trials):
-    """
-    json frame 레코드의 events=['cue'] 마커로 trial 별 cue 발생 좌표를 구한다.
-    cue 는 위치 트리거이므로 z 가 거의 일정해야 정상이다.
-    """
     cues = frames[frames.event == "cue"]
     out = []
     for _, t in trials.iterrows():
@@ -25,7 +19,6 @@ def find_cue_position(frames, trials):
 
 
 def find_choice_position(frames, trials):
-    """events=['left']/['right'] 마커 → 선택(arm 진입) 좌표."""
     ch = frames[frames.event.isin(["left", "right"])]
     out = []
     for _, t in trials.iterrows():
