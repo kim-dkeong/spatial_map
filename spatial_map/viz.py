@@ -88,9 +88,7 @@ def plot_raster_psth(maps, centers, trial_cue, cell, ax=None, raster="heatmap",
     if len(is_sig):
         a1.scatter(centers[is_sig], np.full(len(is_sig), 0.94),
         transform=a1.get_xaxis_transform(),
-        marker='s', s=14, color=_INK, clip_on=False, zorder=5)
-        a1.text(0.01, 0.97, f" p < 0.05", transform=a1.transAxes,
-        fontsize=7.5, va='top', color=_MUTED)
+        marker='s', s=10, color=_INK, clip_on=False, zorder=5)
     a1.set_xlabel(xlabel); a1.set_ylabel("z-scored ΔF/F")
     a1.legend(frameon=False, fontsize=8)
     a1.spines[["top", "right"]].set_visible(False)
