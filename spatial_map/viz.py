@@ -3,6 +3,7 @@ import os
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm
+from scipy import stats
 
 # maze range: -3~9
 COLOR = {1: "#2f6fd0", 2: "#c0392b"}          # 1=left, 2=right
@@ -22,9 +23,17 @@ def plot_raster_psth(maps, centers, trial_cue, cell, ax=None, raster="heatmap",
                          f"ids 순서로 trial_cue 를 만들었는지 확인하세요.")
     R = maps[cell]                                        # (n_trials, n_bins)
 
+    
+
     idx = {c: np.flatnonzero(trial_cue == c) for c in order}
     row_order = np.concatenate([idx[c] for c in reversed(order)])  
-    n_low = len(idx[order[-1]])                           
+    n_low = len(idx[order[-1]])                  
+
+    l_c = R[idx[1]] 
+    r_c = R[idx[2]] 
+    t_stat, p_values = stats.ttest_ind(l_c, r_c, axis=0, equal_var=False)
+    p_values = np.ma.filled(np.ma.asarray(p_values), 1.0)
+    is_sig = np.flatnonzero(p_values < 0.05)     
 
     if ax is None:
         fig, (a0, a1) = plt.subplots(
@@ -75,6 +84,13 @@ def plot_raster_psth(maps, centers, trial_cue, cell, ax=None, raster="heatmap",
         a1.plot(centers, m, color=COLOR[c], lw=1.8, label=f"{LABEL[c]} (n={len(idx[c])})")
         a1.fill_between(centers, m - se, m + se, color=COLOR[c], alpha=.22, lw=0)
         a1.set_xlim(-3, 9); a1.set_ylim(-0.5, 1)
+
+    if len(is_sig):
+        a1.scatter(centers[is_sig], np.full(len(is_sig), 0.94),
+        transform=a1.get_xaxis_transform(),
+        marker='s', s=14, color=_INK, clip_on=False, zorder=5)
+        a1.text(0.01, 0.97, f" p < 0.05", transform=a1.transAxes,
+        fontsize=7.5, va='top', color=_MUTED)
     a1.set_xlabel(xlabel); a1.set_ylabel("z-scored ΔF/F")
     a1.legend(frameon=False, fontsize=8)
     a1.spines[["top", "right"]].set_visible(False)
