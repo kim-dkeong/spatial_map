@@ -20,7 +20,7 @@ from .sync import sync_json_to_vrec
 from .events import find_cue_position, find_choice_position
 from .frames import build_frame_table
 from .maps import spatial_map, zscore, smooth
-from .viz import plot_raster_psth, COLOR, LABEL
+from .viz import plot_raster_psth, make_trial_groups,COLOR, LABEL
 
 
 __all__ = [
