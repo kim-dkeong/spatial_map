@@ -34,20 +34,7 @@ GROUP_SPECS = {
 
 
 def make_trial_groups(trials, ids, split="cue_outcome"):
-    """
-    spatial_map 이 돌려준 ids 순서로 조건 라벨 배열을 만든다.
-
-        groups, spec = make_trial_groups(json_trials, ids)
-        plot_raster_psth(maps, centers, groups, cell, group_spec=spec)
-
-    split
-      "cue"            : cue 방향만 (1=left, 2=right)
-      "cue_outcome"    : cue × 정답여부 → L_o / R_o / L_x / R_x  (기본)
-      "choice_outcome" : 실제 선택 × 정답여부. 운동/선택 코딩을 볼 때.
-
-    ※ trials 는 parse_behavior_json 의 두 번째 반환값이어야 합니다
-      (cue / choice / correct 컬럼 필요). vrec['trial'] 이 아닙니다.
-    """
+    
     need = {"cue": ["cue"], "cue_outcome": ["cue", "correct"],
             "choice_outcome": ["choice", "correct"]}[split]
     for c in need + ["iTrial"]:
@@ -94,16 +81,7 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
                      landmarks=(0.0, 4.0), title=None, cbar=True,
                      group_spec=None, save=None, xlabel="z − cue z (VR unit)",
                      stat=None, alpha=0.05, order=None, legend_loc="best"):
-    """
-    조건별 Raster-PSTH.
-
-      trial_group : (n_trials,) 조건 라벨. 1/2 (left/right) 또는
-                    make_trial_groups() 가 만든 L_o / R_o / L_x / R_x.
-      group_spec  : [(key, 라벨, 색, 선스타일), ...]  순서가 곧 그리는 순서.
-                    None 이면 라벨을 보고 자동 판별.
-      stat        : (key_a, key_b) 두 조건의 bin 별 Welch t-test.
-                    True 면 spec 의 앞 두 조건을 비교.
-    """
+    
     maps = np.asarray(maps)
     centers = np.asarray(centers)
     trial_group = np.asarray(trial_group)
