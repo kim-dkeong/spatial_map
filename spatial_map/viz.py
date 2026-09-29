@@ -212,7 +212,6 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
             #         f"{len(sig)}/{len(p)} bins", transform=a1.transAxes,
             #         fontsize=7, va="top", color=_MUTED)
 
-    a1.x
     a1.set_xlabel('cm from cue'); a1.set_ylabel("ΔF/F")
     a1.legend(frameon=False, fontsize=7.5, loc=legend_loc,
               ncol=2 if len(spec) > 2 else 1)
