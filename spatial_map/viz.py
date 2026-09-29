@@ -121,10 +121,27 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
         v = np.nanpercentile(np.abs(R), 99)
         v = v if np.isfinite(v) and v > 0 else 1.0
 
+        # CMAP_L = LinearSegmentedColormap.from_list(
+        #     "blue_seq", ["#f4f4f2", "#93c5fd", "#1d4ed8"])
+        # CMAP_R = LinearSegmentedColormap.from_list(
+        #     "red_seq", ["#f4f4f2", "#fca5a5", "#c2410c"])
+        colors_L = [
+        (0.0,  "#f4f4f2"),   # white at minimum
+        (0.4,  "#bfdbfe"),   # very light blue
+        (0.7,  "#3b82f6"),   # medium blue
+        (1.0,  "#1e3a8a"),   # deep navy at maximum
+        ]
         CMAP_L = LinearSegmentedColormap.from_list(
-            "blue_seq", ["#f4f4f2", "#93c5fd", "#1d4ed8"])
+            "blue_seq", [(pos, col) for pos, col in colors_L])
+
+        colors_R = [
+            (0.0,  "#f4f4f2"),
+            (0.4,  "#fecaca"),
+            (0.7,  "#ef4444"),
+            (1.0,  "#7f1d1d"),
+        ]
         CMAP_R = LinearSegmentedColormap.from_list(
-            "red_seq", ["#f4f4f2", "#fca5a5", "#c2410c"])
+            "red_seq", [(pos, col) for pos, col in colors_R])
 
         lo_y = 0
         #im_L = im_R = None
