@@ -120,26 +120,27 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
         #    "div", ["#1d4ed8", "#f4f4f2", "#c2410c"])
         v = np.nanpercentile(np.abs(R), 99)
         v = v if np.isfinite(v) and v > 0 else 1.0
-        norm = TwoSlopeNorm(vcenter=0, vmin=-v, vmax=v)
 
         CMAP_L = LinearSegmentedColormap.from_list(
-            "blue_div", ["#f4f4f2", "#93c5fd", "#1d4ed8"])
+            "blue_seq", ["#f4f4f2", "#93c5fd", "#1d4ed8"])
         CMAP_R = LinearSegmentedColormap.from_list(
-            "red_div", ["#f4f4f2", "#fca5a5", "#c2410c"])
+            "red_seq", ["#f4f4f2", "#fca5a5", "#c2410c"])
 
         lo_y = 0
-        im_L = im_R = None
+        #im_L = im_R = None
         for (k, lab, c, _), hi_y in zip(reversed(spec), bounds):
             sub = R[row_order[lo_y:hi_y]]
             g_ext = [centers[0], centers[-1], lo_y, hi_y]
             cmap_g = CMAP_L if _is_left(k) else CMAP_R
-            im = a0.imshow(sub, aspect="auto", origin="lower", cmap=cmap_g,
-                             norm=norm, extent=g_ext, interpolation="nearest")
+            a0.imshow(sub, aspect="auto", origin="lower", cmap=cmap_g,
+                             vmin=-v, vmax=v, extent=g_ext, interpolation="nearest")
             # if _is_left(k):
             #     im_L = im
             # else:
             #     im_R = im
             lo_y = hi_y
+        a0.set_xlim(centers[0], centers[-1])
+        a0.set_ylim(0, len(row_order))
         # im = a0.imshow(R[row_order], aspect="auto", origin="lower", cmap=div,
         #                norm=TwoSlopeNorm(0, -v, v), extent=ext,
         #                interpolation="nearest")
