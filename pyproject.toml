@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "spatial_map"
-version = "0.1.6"
+version = "0.1.7"
 description = "behavior log of VR maze + aligning image data + spatial map"
 readme = "README.md"
 requires-python = ">=3.9"
