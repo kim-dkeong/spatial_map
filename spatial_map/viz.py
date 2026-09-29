@@ -144,15 +144,15 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
         #                norm=TwoSlopeNorm(0, -v, v), extent=ext,
         #                interpolation="nearest")
         if cbar:
-        cbars = [(im_L, "Left"), (im_R, "Right")]
-        pad = 0.02
-        for im_cb, side_label in cbars:
-            if im_cb is None:
-                continue
-            cb = fig.colorbar(im_cb, ax=a0, fraction=0.035, pad=pad)
-            cb.set_label(f"{side_label}  z ΔF/F", fontsize=7)
-            cb.ax.tick_params(labelsize=7)
-            pad += 0.13  
+            cbars = [(im_L, "Left"), (im_R, "Right")]
+            pad = 0.02
+            for im_cb, side_label in cbars:
+                if im_cb is None:
+                    continue
+                cb = fig.colorbar(im_cb, ax=a0, fraction=0.035, pad=pad)
+                cb.set_label(f"{side_label}  z ΔF/F", fontsize=7)
+                cb.ax.tick_params(labelsize=7)
+                pad += 0.13  
 
         # if cbar:
         #     cb = fig.colorbar(im, ax=a0, fraction=.045, pad=.02)
