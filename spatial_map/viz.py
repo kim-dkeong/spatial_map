@@ -174,9 +174,6 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
     for (k, lab, c, _), hi in zip(reversed(spec), bounds):
         if hi < len(row_order):
             a0.axhline(hi, color=_INK, lw=1.1)
-        a0.text(centers[0] + .02 * (centers[-1] - centers[0]), (lo + hi) / 2,
-                f"{lab}  n={len(idx[k])}", color=c, fontsize=7.5,
-                weight="bold", va="center")
         lo = hi
     a0.set_ylabel("Trial")
     a0.set_title(title if title is not None else f"cell {cell}", fontsize=8)
