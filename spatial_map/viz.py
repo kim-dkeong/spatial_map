@@ -179,7 +179,7 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
                 weight="bold", va="center")
         lo = hi
     a0.set_ylabel("Trial")
-    a0.set_title(title if title is not None else f"cell {cell}", fontsize=10)
+    a0.set_title(title if title is not None else f"cell {cell}", fontsize=8)
 
     # ---------------- PSTH ----------------
     for k, lab, c, ls in spec:
@@ -191,7 +191,7 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
         se = np.nanstd(sub, 0) / np.sqrt(np.maximum(n_ok, 1))
         m = np.where(n_ok >= 2, m, np.nan)
         a1.plot(centers, m, color=c, ls=ls, lw=1.8,
-                label=f"{lab} (n={len(idx[k])})")
+                label=["Left", "Right"])
         if len(sub) >= 2:
             a1.fill_between(centers, m - se, m + se, color=c, alpha=.16, lw=0)
 
@@ -213,7 +213,7 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
             #         fontsize=7, va="top", color=_MUTED)
 
     a1.set_xlabel('cm from cue'); a1.set_ylabel("ΔF/F")
-    a1.legend(frameon=False, fontsize=7.5, loc=legend_loc,
+    a1.legend(frameon=False, fontsize=3, loc=legend_loc,
               ncol=2 if len(spec) > 2 else 1)
     a1.spines[["top", "right"]].set_visible(False)
 
