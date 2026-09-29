@@ -191,7 +191,7 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
         se = np.nanstd(sub, 0) / np.sqrt(np.maximum(n_ok, 1))
         m = np.where(n_ok >= 2, m, np.nan)
         a1.plot(centers, m, color=c, ls=ls, lw=1.8,
-                label=["Left correct", "Right correct", "Left error", "Right error"])
+                label=f"{lab}")
         if len(sub) >= 2:
             a1.fill_between(centers, m - se, m + se, color=c, alpha=.16, lw=0)
 
