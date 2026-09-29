@@ -112,19 +112,52 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
         fig = a0.figure
 
     # ---------------- raster ----------------
+    def _is_left(k):
+        return k == 1 or (isinstance(k, str) and k.startswith("L"))
     ext = [centers[0], centers[-1], 0, len(row_order)]
     if raster == "heatmap":
-        div = LinearSegmentedColormap.from_list(
-            "div", ["#1d4ed8", "#f4f4f2", "#c2410c"])
+        #div = LinearSegmentedColormap.from_list(
+        #    "div", ["#1d4ed8", "#f4f4f2", "#c2410c"])
         v = np.nanpercentile(np.abs(R), 99)
         v = v if np.isfinite(v) and v > 0 else 1.0
-        im = a0.imshow(R[row_order], aspect="auto", origin="lower", cmap=div,
-                       norm=TwoSlopeNorm(0, -v, v), extent=ext,
-                       interpolation="nearest")
+        norm = TwoSlopeNorm(vcenter=0, vmin=-v, vmax=v)
+
+        CMAP_L = LinearSegmentedColormap.from_list(
+            "blue_div", ["#93c5fd", "#f4f4f2", "#1d4ed8"])
+        CMAP_R = LinearSegmentedColormap.from_list(
+            "red_div", ["#fca5a5", "#f4f4f2", "#c2410c"])
+
+        lo_y = 0
+        im_L = im_R = None
+        for (k, lab, c, _), hi_y in zip(reversed(spec), bounds):
+            sub = R[row_order[lo_y:hi_y]]
+            g_ext = [centers[0], centers[-1], lo_y, hi_y]
+            cmap_g = CMAP_L if _is_left(k) else CMAP_R
+            im = a0.imshow(sub, aspect="auto", origin="lower", cmap=cmap_g,
+                             norm=norm, extent=g_ext, interpolation="nearest")
+            if _is_left(k):
+                im_L = im
+            else:
+                im_R = im
+            lo_y = hi_y
+        # im = a0.imshow(R[row_order], aspect="auto", origin="lower", cmap=div,
+        #                norm=TwoSlopeNorm(0, -v, v), extent=ext,
+        #                interpolation="nearest")
         if cbar:
-            cb = fig.colorbar(im, ax=a0, fraction=.045, pad=.02)
-            cb.set_label("z-scored ΔF/F", fontsize=8)
+        cbars = [(im_L, "Left"), (im_R, "Right")]
+        pad = 0.02
+        for im_cb, side_label in cbars:
+            if im_cb is None:
+                continue
+            cb = fig.colorbar(im_cb, ax=a0, fraction=0.035, pad=pad)
+            cb.set_label(f"{side_label}  z ΔF/F", fontsize=7)
             cb.ax.tick_params(labelsize=7)
+            pad += 0.13  
+
+        # if cbar:
+        #     cb = fig.colorbar(im, ax=a0, fraction=.045, pad=.02)
+        #     cb.set_label("z-scored ΔF/F", fontsize=8)
+        #     cb.ax.tick_params(labelsize=7)
     else:                                                  # dot raster
         thr = np.nanpercentile(R, 80)
         col_of = {k: c for k, _, c, _ in spec}
