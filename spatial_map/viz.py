@@ -105,8 +105,8 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
 
     if ax is None:
         fig, (a0, a1) = plt.subplots(
-            2, 1, figsize=(4.8, 5.2), sharex=True, constrained_layout=True,
-            gridspec_kw=dict(height_ratios=[1.6, 1]))
+            2, 1, sharex=True, constrained_layout=True,
+            gridspec_kw=dict(height_ratios=[1, 1]))
     else:
         a0, a1 = ax
         fig = a0.figure
@@ -178,7 +178,7 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
                 f"{lab}  n={len(idx[k])}", color=c, fontsize=7.5,
                 weight="bold", va="center")
         lo = hi
-    a0.set_ylabel("trial")
+    a0.set_ylabel("Trial")
     a0.set_title(title if title is not None else f"cell {cell}", fontsize=10)
 
     # ---------------- PSTH ----------------
@@ -207,12 +207,13 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
             if len(sig):
                 a1.scatter(centers[sig], np.full(len(sig), 1.03),
                            transform=a1.get_xaxis_transform(), marker="s",
-                           s=13, color=_INK, clip_on=False, zorder=5)
-            a1.text(0.01, 0.98, f"sig bar: {ka} vs {kb}, p<{alpha} — "
-                    f"{len(sig)}/{len(p)} bins", transform=a1.transAxes,
-                    fontsize=7, va="top", color=_MUTED)
+                           s=10, color=_INK, clip_on=False, zorder=5)
+            # a1.text(0.01, 0.98, f"sig bar: {ka} vs {kb}, p<{alpha} — "
+            #         f"{len(sig)}/{len(p)} bins", transform=a1.transAxes,
+            #         fontsize=7, va="top", color=_MUTED)
 
-    a1.set_xlabel(xlabel); a1.set_ylabel("z-scored ΔF/F")
+    a1.x
+    a1.set_xlabel('cm from cue'); a1.set_ylabel("ΔF/F")
     a1.legend(frameon=False, fontsize=7.5, loc=legend_loc,
               ncol=2 if len(spec) > 2 else 1)
     a1.spines[["top", "right"]].set_visible(False)
