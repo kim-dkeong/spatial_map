@@ -207,13 +207,13 @@ def plot_raster_psth(maps, centers, trial_group, cell, ax=None, raster="heatmap"
             if len(sig):
                 a1.scatter(centers[sig], np.full(len(sig), 1.03),
                            transform=a1.get_xaxis_transform(), marker="s",
-                           s=10, color=_INK, clip_on=False, zorder=5)
+                           s=5, color=_INK, clip_on=False, zorder=5)
             # a1.text(0.01, 0.98, f"sig bar: {ka} vs {kb}, p<{alpha} — "
             #         f"{len(sig)}/{len(p)} bins", transform=a1.transAxes,
             #         fontsize=7, va="top", color=_MUTED)
 
     a1.set_xlabel('cm from cue'); a1.set_ylabel("ΔF/F")
-    a1.legend(frameon=False, fontsize=3, loc=legend_loc,
+    a1.legend(frameon=False, fontsize=5, loc=legend_loc,
               ncol=2 if len(spec) > 2 else 1)
     a1.spines[["top", "right"]].set_visible(False)
 
